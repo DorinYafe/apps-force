@@ -1,7 +1,6 @@
 export interface User {
-    id: {
-        name: string,
-        value: string,
+    login: {
+        uuid: string,
     },
     name: {
         title: string,

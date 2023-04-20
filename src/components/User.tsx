@@ -8,10 +8,12 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 
 const User: React.FC = () => {
+    const [users, setUsers] = useState<UserInterface[]>([]);
+    const [user, setUser] = useState<UserInterface | null>(null);
     const [isBasicModalOpen, setIsBasicModalOpen] = useState<boolean>(false);
     const { isLoading, isError, data, error, refetch } = useQuery(["userReq"], () =>
         axios.get("https://randomuser.me/api/?results=10")
-            .then((res) => res.data.results)
+            .then((res) => setUsers(res.data.results))
     )
 
     const openBasicModal = () => {
@@ -20,16 +22,22 @@ const User: React.FC = () => {
 
     const closeBasicModal = () => {
         setIsBasicModalOpen(false);
+        setUser(null);
+    }
+
+    const handleClick = (user: UserInterface) => {
+        setUser(user);
+        openBasicModal();
     }
 
     return (
         <Container>
-            {isBasicModalOpen && <BasicModal isOpen={isBasicModalOpen} isClosed={closeBasicModal} />}
-            {data && data.map((user: UserInterface) => {
+            {isBasicModalOpen && <BasicModal isOpen={isBasicModalOpen} isClosed={closeBasicModal} user={user} />}
+            {users && users.map((user: UserInterface) => {
                 return (
-                    <div key={user.id.value}>
+                    <div key={user.login.uuid}>
                         <MuiCard>
-                            <MuiAvatar alt={user.id.name} src={user.picture.medium} />
+                            <MuiAvatar alt={user.name.first} src={user.picture.medium} />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="div">
                                     {`${user.name.title} ${user.name.first} ${user.name.last}`}
@@ -47,7 +55,7 @@ const User: React.FC = () => {
                                     <Title>You can reach them at...</Title>
                                     {` ${user.email}`}
                                 </Typography>
-                                <Button onClick={openBasicModal} >Edit</Button>
+                                <Button onClick={() => handleClick(user)} >Edit</Button>
                             </CardContent>
                         </MuiCard>
                     </div>
