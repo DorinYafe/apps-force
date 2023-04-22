@@ -1,15 +1,17 @@
-import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 import { ButtonsContainer } from './Button';
-import { User } from '../../interfaces/user';
+import { User, UpdateUser } from '../../interfaces/user';
 import { userValidationSchema } from '../../schemas/userSchema';
 
 interface Props {
-    user: User | null;
+    user?: User | null;
     isClosed: () => void;
+    handleSubmit: (values: UpdateUser) => any;
 }
 
-const Form = ({ user, isClosed }: Props) => {
+const FormikForm = ({ user, isClosed, handleSubmit }: Props) => {
+
     const initialValues = {
         title: user?.name.title,
         firstName: user?.name.first,
@@ -23,20 +25,15 @@ const Form = ({ user, isClosed }: Props) => {
 
     const renderError = (message: string) => <p className="help is-danger">{message}</p>;
 
-    const onSubmit = (values: {}) => {
-        alert(JSON.stringify(values, null, 2));
-    };
-
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={userValidationSchema}
-            onSubmit={async (values, { resetForm }) => {
-                await onSubmit(values);
-                resetForm();
+            onSubmit={async (values: any) => {
+                await handleSubmit(values);
             }}
         >
-            <FormikForm>
+            <Form>
                 <div
                     className="container"
                     style={{
@@ -145,9 +142,9 @@ const Form = ({ user, isClosed }: Props) => {
                         <button type="button" className="button" onClick={isClosed}>Close</button>
                     </ButtonsContainer>
                 </div>
-            </FormikForm>
+            </Form>
         </Formik>
     )
 };
 
-export { Form };
+export { FormikForm };

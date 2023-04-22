@@ -1,4 +1,6 @@
+import { useState } from "react";
 import styled from "styled-components";
+import { Button, BasicModal } from './common';
 
 const HeaderWrapper = styled.header`
     height: 60px;
@@ -13,6 +15,7 @@ const HeaderWrapper = styled.header`
 
 const Menu = styled.nav`
     display: flex;
+    align-items: center;
     position: relative;
     width: initial;
     border-bottom: none;
@@ -24,10 +27,30 @@ const Menu = styled.nav`
 `;
 
 const Header: React.FC = () => {
+    const [isBasicModalOpen, setIsBasicModalOpen] = useState<boolean>(false);
+
+    const openBasicModal = () => {
+        setIsBasicModalOpen(true);
+    }
+
+    const closeBasicModal = () => {
+        setIsBasicModalOpen(false);
+    }
+
+    //TODO: 
+    //Update usersList with new user
     return (
         <HeaderWrapper>
             <Menu>
-                AppsForce
+                {isBasicModalOpen && <BasicModal isOpen={isBasicModalOpen} isClosed={closeBasicModal} />}
+
+                <div>AppsForce</div>
+                <Button
+                    style={{ margin: "auto auto auto 1rem" }}
+                    onClick={openBasicModal}
+                >
+                    Add user
+                </Button>
             </Menu>
         </HeaderWrapper>
     )

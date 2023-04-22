@@ -7,3 +7,4 @@ export * from './Divider';
 export * from './Modal';
 export * from './Form';
 export * from './Loader';
+export * from './Error';

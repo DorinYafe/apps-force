@@ -7,7 +7,7 @@ const MuiLoader = () => {
             <CircularProgress
                 size={68}
                 sx={{
-                    color: "green",
+                    color: "#00d1b2",
                     margin: "auto",
                     zIndex: 1,
                 }}

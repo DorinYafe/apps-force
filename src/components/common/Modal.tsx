@@ -1,13 +1,14 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { Form } from '../common';
+import { FormikForm } from '../common';
 
-import { User } from '../../interfaces/user';
+import { UpdateUser, User } from '../../interfaces/user';
 
 interface Props {
     isOpen: boolean;
     isClosed: () => void;
-    user: User | null;
+    user?: User | null;
+    setUser?: any;
 }
 
 const style = {
@@ -22,7 +23,28 @@ const style = {
     p: 4,
 };
 
-const BasicModal = ({ isOpen, isClosed, user }: Props) => {
+const BasicModal = ({ isOpen, isClosed, user, setUser }: Props) => {
+
+    const handleSubmit = (values: UpdateUser) => {
+        if (values) {
+            setUser({
+                name: {
+                    title: values.title,
+                    first: values.firstName,
+                    last: values.lastName,
+                },
+                email: values.email,
+                location: {
+                    street: {
+                        number: values.streetNumber,
+                        name: values.streetName,
+                    },
+                    city: values.city,
+                    country: values.country,
+                },
+            })
+        }
+    };
 
     return (
         <div>
@@ -34,11 +56,9 @@ const BasicModal = ({ isOpen, isClosed, user }: Props) => {
             >
                 <Box
                     sx={style}
-                    component="form"
-                    noValidate
-                    autoComplete="off"
+                    component="div"
                 >
-                    <Form user={user} isClosed={isClosed} />
+                    <FormikForm user={user} isClosed={isClosed} handleSubmit={handleSubmit} />
                 </Box>
             </Modal>
         </div>

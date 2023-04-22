@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import User from './components/User';
 import { createGlobalStyle } from 'styled-components';
+import User from './components/User';
 
 const GlobalStyle = createGlobalStyle`
   body {
