@@ -1,6 +1,8 @@
-import Input from '@mui/material/Input';
-import { Button, ButtonsContainer } from './Button';
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+
+import { ButtonsContainer } from './Button';
 import { User } from '../../interfaces/user';
+import { userValidationSchema } from '../../schemas/userSchema';
 
 interface Props {
     user: User | null;
@@ -8,63 +10,143 @@ interface Props {
 }
 
 const Form = ({ user, isClosed }: Props) => {
+    const initialValues = {
+        title: user?.name.title,
+        firstName: user?.name.first,
+        lastName: user?.name.last,
+        email: user?.email,
+        streetName: user?.location.street.name,
+        streetNumber: user?.location.street.number,
+        city: user?.location.city,
+        country: user?.location.country,
+    };
+
+    const renderError = (message: string) => <p className="help is-danger">{message}</p>;
+
+    const onSubmit = (values: {}) => {
+        alert(JSON.stringify(values, null, 2));
+    };
+
     return (
-        <form>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', margin: 'auto' }}>
-                <Input
-                    required
-                    id="title"
-                    name="title"
-                    defaultValue={user?.name.title}
-                />
-                <Input
-                    required
-                    id="firstName"
-                    name="firstName"
-                    defaultValue={user?.name.first}
-                />
-                <Input
-                    required
-                    id="lastName"
-                    name="lastName"
-                    defaultValue={user?.name.last}
-                />
-                <Input
-                    required
-                    id="email"
-                    name="email"
-                    defaultValue={`${user?.email}`}
-                />
-                <Input
-                    required
-                    id="streetName"
-                    name="streetName"
-                    defaultValue={user?.location.street.name}
-                />
-                <Input
-                    required
-                    id="streetNumber"
-                    name="streetNumber"
-                    defaultValue={user?.location.street.number}
-                />
-                <Input
-                    required
-                    id="city"
-                    name="city"
-                    defaultValue={user?.location.city}
-                />
-                <Input
-                    required
-                    id="country"
-                    name="country"
-                    defaultValue={user?.location.country}
-                />
-            </div>
-            <ButtonsContainer>
-                <Button type='button' onClick={() => console.log(user)}>Save</Button>
-                <Button type='button' onClick={isClosed}>Close</Button>
-            </ButtonsContainer>
-        </form>
+        <Formik
+            initialValues={initialValues}
+            validationSchema={userValidationSchema}
+            onSubmit={async (values, { resetForm }) => {
+                await onSubmit(values);
+                resetForm();
+            }}
+        >
+            <FormikForm>
+                <div
+                    className="container"
+                    style={{
+                        width: "90%",
+                    }}
+                >
+                    <div className="field">
+                        <label className="label" htmlFor="title">
+                            Full name
+                        </label>
+                        <div className="control">
+                            <Field
+                                name="title"
+                                type="text"
+                                className="input"
+                                placeholder="Name title"
+                            />
+                        </div>
+                        <div style={{ display: "flex" }}>
+                            <div className="control">
+                                <Field
+                                    name="firstName"
+                                    type="text"
+                                    className="input"
+                                    placeholder="First name"
+                                />
+                            </div>
+                            <div className="control">
+                                <Field
+                                    name="lastName"
+                                    type="text"
+                                    className="input"
+                                    placeholder="Last name"
+                                />
+                            </div>
+                        </div>
+                        <ErrorMessage name="title" render={renderError} />
+                        <ErrorMessage name="firstName" render={renderError} />
+                        <ErrorMessage name="lastName" render={renderError} />
+                    </div>
+
+                    <div className="field">
+                        <label className="label" htmlFor="email">
+                            Email address
+                        </label>
+                        <div className="control">
+                            <Field
+                                name="email"
+                                type="text"
+                                className="input"
+                                placeholder="Email address"
+                            />
+                            <ErrorMessage name="email" render={renderError} />
+                        </div>
+                    </div>
+
+                    <div className="field">
+                        <label className="label" htmlFor="streetName">
+                            Location
+                        </label>
+                        <div style={{ display: "flex" }}>
+                            <div className="control">
+                                <Field
+                                    name="streetName"
+                                    type="text"
+                                    className="input"
+                                    placeholder="Street name"
+                                />
+                            </div>
+                            <div className="control">
+                                <Field
+                                    name="streetNumber"
+                                    type="number"
+                                    className="input"
+                                    placeholder="Street number"
+                                />
+                            </div>
+                        </div>
+                        <ErrorMessage name="streetName" render={renderError} />
+                        <ErrorMessage name="streetNumber" render={renderError} />
+
+                        <div className="control">
+                            <Field
+                                name="city"
+                                type="text"
+                                className="input"
+                                placeholder="City"
+                            />
+                            <ErrorMessage name="city" render={renderError} />
+                        </div>
+                        <div className="control">
+                            <Field
+                                name="country"
+                                type="text"
+                                className="input"
+                                placeholder="Country"
+                            />
+                            <ErrorMessage name="country" render={renderError} />
+                        </div>
+                    </div>
+
+                    <ButtonsContainer>
+                        <button type="submit" className="button is-primary">
+                            Submit
+                        </button>
+                        <button type="button" className="button" onClick={isClosed}>Close</button>
+                    </ButtonsContainer>
+                </div>
+            </FormikForm>
+        </Formik>
     )
 };
 
