@@ -1,8 +1,12 @@
-import React from 'react';
+import { useState } from 'react';
+
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { User } from '../../interfaces/user';
+import Input from '@mui/material/Input';
 import { MuiTextField } from './TextField';
+import { Button, ButtonsContainer } from '../common';
+
+import { User } from '../../interfaces/user';
 
 interface Props {
     isOpen: boolean;
@@ -23,7 +27,8 @@ const style = {
 };
 
 const BasicModal = ({ isOpen, isClosed, user }: Props) => {
-    console.log(user)
+    const [updatedUser, setUpdatedUser] = useState(user);
+
     return (
         <div>
             <Modal
@@ -38,68 +43,63 @@ const BasicModal = ({ isOpen, isClosed, user }: Props) => {
                     noValidate
                     autoComplete="off">
                     <div>
-                        <MuiTextField
+                        <Input
                             required
                             id="title"
-                            label="Title is required"
+                            name="title"
                             defaultValue={user?.name.title}
-                            width="20%"
                         />
-                        <MuiTextField
+                        <Input
                             required
-                            id="first"
-                            label="Forename is required"
+                            id="firstName"
+                            name="firstName"
                             defaultValue={user?.name.first}
-                            width="32%"
                         />
-                        <MuiTextField
+                        <Input
                             required
-                            id="last"
-                            label="Surname is required"
+                            id="lastName"
+                            name="lastName"
                             defaultValue={user?.name.last}
-                            width="32%"
                         />
                     </div>
                     <div>
-                        <MuiTextField
+                        <Input
                             required
                             id="email"
-                            label="Email is required"
+                            name="email"
                             defaultValue={`${user?.email}`}
-                            width="93.5%"
                         />
                     </div>
                     <div>
-                        <MuiTextField
+                        <Input
                             required
                             id="streetName"
-                            label="Street is required"
+                            name="streetName"
                             defaultValue={user?.location.street.name}
-                            width="20%"
                         />
-                        <MuiTextField
+                        <Input
                             required
                             id="streetNumber"
-                            label="Number is required"
+                            name="streetNumber"
                             defaultValue={user?.location.street.number}
-                            width="20%"
                         />
-                        <MuiTextField
+                        <Input
                             required
                             id="city"
-                            label="City is required"
+                            name="city"
                             defaultValue={user?.location.city}
-                            width="20%"
                         />
-                        <MuiTextField
+                        <Input
                             required
                             id="country"
-                            label="Country is required"
+                            name="country"
                             defaultValue={user?.location.country}
-                            width="20%"
                         />
                     </div>
-
+                    <ButtonsContainer>
+                        <Button type='button' onClick={() => console.log(user)}>Save</Button>
+                        <Button type='button' onClick={isClosed}>Close</Button>
+                    </ButtonsContainer>
                 </Box>
             </Modal>
         </div>

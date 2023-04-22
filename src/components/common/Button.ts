@@ -13,6 +13,7 @@ const Button = styled.button`
     display: block;
     white-space: none;
     margin-top: 1.5rem;
+    cursor: pointer;
 
     &:disabled {
         background: #eee;
@@ -20,4 +21,10 @@ const Button = styled.button`
     }
 `
 
-export {Button};
+const ButtonsContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+`;
+
+export {Button, ButtonsContainer};

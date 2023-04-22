@@ -6,9 +6,11 @@ interface Props {
     label: string;
     defaultValue: string | number | undefined;
     width: string;
+    onChange?: any;
+    value?: string;
 }
 
-const MuiTextField = ({ required, id, label, defaultValue, width }: Props) => {
+const MuiTextField = ({ required, id, label, defaultValue, width, onChange, value }: Props) => {
     
 const style = {
     margin: "1rem",
@@ -23,6 +25,8 @@ const style = {
             id={id}
             label={label}
             defaultValue={defaultValue}
+            onChange={onChange}
+            value={value}
         />
     )
 }

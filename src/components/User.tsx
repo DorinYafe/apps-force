@@ -1,20 +1,20 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { User as UserInterface } from '../interfaces/user';
-import { Button, Container, MuiAvatar, MuiCard, Title, BasicModal } from './common';
+import axios from 'axios';
+import useGetUsers from '../hooks/useGetUsers';
+
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import { Button, Container, MuiAvatar, MuiCard, Title, BasicModal } from './common';
+
+import { User as UserInterface } from '../interfaces/user';
 
 const User: React.FC = () => {
+    const [isLoading, isError, data] = useGetUsers();
     const [users, setUsers] = useState<UserInterface[]>([]);
     const [user, setUser] = useState<UserInterface | null>(null);
     const [isBasicModalOpen, setIsBasicModalOpen] = useState<boolean>(false);
-    const { isLoading, isError, data, error, refetch } = useQuery(["userReq"], () =>
-        axios.get("https://randomuser.me/api/?results=10")
-            .then((res) => setUsers(res.data.results))
-    )
 
     const openBasicModal = () => {
         setIsBasicModalOpen(true);
@@ -29,6 +29,10 @@ const User: React.FC = () => {
         setUser(user);
         openBasicModal();
     }
+
+    useEffect(() => {
+        setUsers(data);
+    }, [data]);
 
     return (
         <Container>
